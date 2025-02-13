@@ -7,13 +7,13 @@
 		<div class="grid gap-12 lg:grid-cols-2">
 			<div>
 				<h1 class="text-5xl font-bold leading-tight text-white lg:text-6xl">
-					Your Health Data,<br />
-					<span class="text-[#94A3B8]">Your Rules</span>
+					Understand Your<br />
+					<span class="text-[#94A3B8]">Healthcare Costs</span>
 				</h1>
 				<p class="mt-6 text-lg leading-relaxed text-[#94A3B8]">
-					Cleanbill consolidates your medical records into one easy-to-understand timeline that you
-					own. Take control of your health journey, manage who can access your health data, and have
-					better conversations with your doctor.
+					Cleanbill.ai uses AI to decode your medical bills and insurance benefits. We make
+					healthcare expenses simple to understand, identify potential savings, and help you take
+					control of your healthcare costs.
 				</p>
 				<div class="mt-8">
 					<a

@@ -4,39 +4,39 @@
 	const details = [
 		{
 			icon: 'check',
-			title: 'Better Care Coordination',
+			title: 'Error Detection',
 			description:
-				'Share accurate, complete records with any provider instantly. No more repeating tests or missing critical information.'
+				'Our AI automatically scans bills for common errors, duplicate charges, and incorrect coding that could be costing you money.'
 		},
 		{
 			icon: 'bolt',
-			title: 'Personalized Insights',
+			title: 'Instant Analysis',
 			description:
-				'Use AI models of your choice to analyze your complete health history and get personalized recommendations.'
+				'Get immediate insights into your medical bills and insurance documents with our advanced AI processing.'
 		},
 		{
 			icon: 'fingerprint',
-			title: 'Privacy & Control',
+			title: 'Secure & Private',
 			description:
-				'Choose who sees what and for how long. Revoke access anytime. Your sensitive health information stays under your control.'
+				'Your financial and medical information is protected with bank-level security and encryption.'
 		},
 		{
 			icon: 'clock',
-			title: 'Emergency Access',
+			title: 'Time Savings',
 			description:
-				'Grant immediate access to your records in emergencies. Critical information available when seconds count.'
+				'Stop spending hours trying to understand medical bills and insurance paperwork. Let our AI do the heavy lifting.'
 		},
 		{
 			icon: 'chart',
-			title: 'Research Participation',
+			title: 'Cost Tracking',
 			description:
-				'Choose to contribute your data to medical research. Help advance healthcare while maintaining your privacy.'
+				'Keep track of all your healthcare expenses in one place, with clear breakdowns and spending insights.'
 		},
 		{
 			icon: 'dollar',
-			title: 'Cost Savings',
+			title: 'Savings Opportunities',
 			description:
-				'Avoid duplicate tests and procedures. Share previous results with new providers to save time and money.'
+				'Identify potential savings opportunities and get recommendations for reducing your healthcare costs.'
 		}
 	];
 </script>
@@ -45,10 +45,10 @@
 	<section class="py-24">
 		<div class="text-center">
 			<h2 class={`text-4xl font-bold ${$theme ? 'text-white' : 'text-[#1F2937]'}`}>
-				Why Own Your Health Records?
+				Transform Complex Bills into Clarity
 			</h2>
 			<p class={`mx-auto mt-4 max-w-3xl text-xl ${$theme ? 'text-[#94A3B8]' : 'text-[#6B7280]'}`}>
-				Your health records are more than just documents – they're the key to better healthcare
+				Advanced AI tools that make healthcare expenses simple to understand, manage, and optimize
 			</p>
 		</div>
 		<div class="mt-20 grid gap-8 md:grid-cols-2 lg:grid-cols-3">

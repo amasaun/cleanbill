@@ -1,13 +1,25 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import ThemeToggle from './ThemeToggle.svelte';
 	import { theme } from '$lib/stores/theme';
 	import { browser } from '$app/environment';
+
+	let mounted = false;
+
+	onMount(() => {
+		mounted = true;
+	});
 
 	// Get system preference for initial render
 	const prefersDark = browser && window.matchMedia('(prefers-color-scheme: dark)').matches;
 	const initialTheme =
 		browser &&
 		(localStorage.theme === 'light' ? false : localStorage.theme === 'dark' ? true : prefersDark);
+
+	console.log($theme);
+	console.log(prefersDark);
+	console.log(initialTheme);
+	console.log(browser);
 
 	const socialIcons = {
 		linkedin:
@@ -23,13 +35,19 @@
 	<div class="mx-auto max-w-7xl">
 		<div class="flex items-center justify-between">
 			<div class="flex items-center">
-				<a href="/" class="flex items-center space-x-2">
-					<img
-						src={$theme ? '/icon-white.svg' : '/icon-blue.svg'}
-						alt="Cleanbill Icon"
-						class="h-8 w-8"
-					/>
-					<img src={$theme ? '/logo-white.svg' : '/logo-blue.svg'} alt="Cleanbill" class="h-8" />
+				<a href="/" class="flex items-center space-x-3">
+					{#if mounted}
+						<img
+							src={$theme ? '/icon-white.svg' : '/icon-blue.svg'}
+							alt="Cleanbill Icon"
+							class="h-12 w-12 md:hidden"
+						/>
+						<img
+							src={$theme ? '/logo-white.svg' : '/logo-blue.svg'}
+							alt="Cleanbill"
+							class="hidden h-10 md:block"
+						/>
+					{/if}
 				</a>
 			</div>
 			<div class="flex items-center space-x-6">
@@ -41,6 +59,7 @@
 						rel="noopener"
 						class="hover:opacity-80"
 						style={$theme ? 'color: #9BA3AF;' : 'color: #9BA3AF;'}
+						aria-label={`Visit our ${social} page`}
 					>
 						<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
 							<path d={path} />

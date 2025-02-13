@@ -10,3 +10,16 @@ html {
 	padding: 0;
 	width: 100%;
 }
+
+/* Add system theme detection */
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme]) {
+		color-scheme: dark;
+	}
+}
+
+@media (prefers-color-scheme: light) {
+	:root:not([data-theme]) {
+		color-scheme: light;
+	}
+}

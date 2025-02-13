@@ -1,8 +1,10 @@
 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 	<section class="py-24">
 		<div class="text-center">
-			<h2 class="text-4xl font-bold text-white">Take control of your health data</h2>
-			<p class="mx-auto mt-4 max-w-3xl text-xl text-[#94A3B8]">Start owning your medical future.</p>
+			<h2 class="text-4xl font-bold text-white">Stop Overpaying for Healthcare</h2>
+			<p class="mx-auto mt-4 max-w-3xl text-xl text-[#94A3B8]">
+				Join thousands saving money with AI-powered bill analysis
+			</p>
 		</div>
 		<div class="mt-8 flex justify-center">
 			<a

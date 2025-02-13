@@ -4,21 +4,21 @@
 	const features = [
 		{
 			icon: 'lock',
-			title: 'Complete Data Ownership',
+			title: 'Smart Bill Analysis',
 			description:
-				"Your medical data belongs to you. Securely use it with multiple apps (even if it's not us), and pass it down to build generational medical history."
+				'Our AI technology scans your medical bills for errors and overcharges, helping you avoid unnecessary expenses and identify potential savings.'
 		},
 		{
 			icon: 'share',
-			title: 'Smart Data Sharing',
+			title: 'Insurance Benefit Decoder',
 			description:
-				'Grant and revoke access to your health data at any time. Share with healthcare providers, research institutions, or AI models on your terms.'
+				'Understand your insurance benefits in plain English. We translate complex EOBs into clear, actionable information you can use.'
 		},
 		{
 			icon: 'monitor',
-			title: 'AI-Powered Insights',
+			title: 'Cost Management Assistant',
 			description:
-				'Choose from a marketplace of AI clinical agents to talk about your health securely. Get personalized insights while maintaining complete privacy and control.'
+				'Get personalized insights and recommendations to help you navigate healthcare expenses and make informed financial decisions.'
 		}
 	];
 </script>
@@ -27,10 +27,10 @@
 	<section class="py-24">
 		<div class="text-center">
 			<h2 class={`text-4xl font-bold ${$theme ? 'text-white' : 'text-[#1F2937]'}`}>
-				Control The Conversation.
+				Simplify Your Healthcare Bills
 			</h2>
 			<p class={`mx-auto mt-4 max-w-3xl text-xl ${$theme ? 'text-[#94A3B8]' : 'text-[#6B7280]'}`}>
-				Experience a new era of patient directed healthcare where you're in charge
+				Let AI help you understand and manage your medical expenses with confidence
 			</p>
 		</div>
 		<div class="mt-20 grid gap-8 lg:grid-cols-3">
