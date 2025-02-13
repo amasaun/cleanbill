@@ -60,162 +60,248 @@
 		completedSteps = [false, false, false, false, false];
 
 		const interval = setInterval(() => {
-			// Use the same value for both display and progress bar
-			const increment = 0.5;
-			progress += increment;
+			progress += 0.5;
 
-			// Update checkmarks at same intervals
 			if (progress >= 20) completedSteps[0] = true;
 			if (progress >= 40) completedSteps[1] = true;
 			if (progress >= 60) completedSteps[2] = true;
 			if (progress >= 80) completedSteps[3] = true;
 			if (progress >= 100) {
+				progress = 100; // Ensure we stop exactly at 100
 				completedSteps[4] = true;
 				clearInterval(interval);
 				analyzing = false;
 				showSummary = true;
 				savings = parseFloat(calculateSavings(parseFloat(billAmount)));
 			}
-		}, 30); // Slightly slower interval for smoother animation
+		}, 30);
 	}
 </script>
 
+<!-- Main container with adjusted height -->
 <div
-	class="rounded-xl border border-violet-100 bg-gradient-to-br from-violet-50/80 via-white/50 to-indigo-50/80 p-6 shadow-lg backdrop-blur-sm"
-	role="region"
-	aria-label="Bill Analysis Demo"
+	class="relative rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100/80 p-6 shadow-lg backdrop-blur-sm"
 >
+	<!-- Header section -->
 	<div class="mb-4 flex items-center justify-between">
-		<h3 class="text-lg font-semibold text-violet-950">AI Bill Analysis</h3>
+		<h3 class="text-lg font-semibold text-slate-800">Bill Analysis</h3>
 		<button
-			class="rounded-md bg-gradient-to-r from-violet-500 to-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:from-violet-600 hover:to-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+			on:click={startDemo}
+			class="rounded-full bg-violet-600 px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
 		>
 			Analyze Again
 		</button>
 	</div>
 
-	<div class="mb-6 rounded-lg bg-white/80 p-4 shadow-sm backdrop-blur-sm">
+	<!-- Bill info card -->
+	<div class="mb-4 rounded-xl bg-white p-4 shadow-sm">
+		<!-- Bill header -->
 		<div class="flex items-center justify-between">
-			<span class="text-sm text-gray-500">
-				{billTitle}
-			</span>
-			<span class="text-sm font-medium text-gray-600">
-				${billAmount}
-			</span>
-		</div>
-		{#if analyzing}
-			<div
-				class="mt-4"
-				role="progressbar"
-				aria-valuemin="0"
-				aria-valuemax="100"
-				aria-valuenow={progress}
-			>
-				<div class="mb-2 flex justify-between text-xs">
-					<span class="text-gray-500">Analyzing bill...</span>
-					<span class="text-gray-600">{Math.round(progress)}%</span>
-				</div>
-				<div class="h-2 overflow-hidden rounded-full bg-violet-100">
-					<div
-						class="h-2 rounded-full bg-gradient-to-r from-violet-500 to-violet-600 transition-all duration-300"
-					/>
-				</div>
+			<div class="flex-1">
+				<p class="text-sm font-medium text-slate-800">{billTitle}</p>
+				<p class="mt-0.5 text-xs text-slate-500">Due in 30 days</p>
 			</div>
-		{:else if savings > 0}
-			<div class="mt-4 rounded-md bg-violet-50/80 p-4 shadow-sm backdrop-blur-sm">
-				<div class="flex items-center">
-					<svg
-						class="h-5 w-5 text-violet-500"
-						viewBox="0 0 20 20"
-						fill="currentColor"
-						aria-hidden="true"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-					<div class="ml-3">
-						<p class="text-base font-semibold text-violet-700">
-							${savings.toFixed(2)} in Potential Savings
-						</p>
-						<p class="mt-1 text-sm text-violet-600">
-							That's {Math.round((savings / parseFloat(billAmount)) * 100)}% off your total bill
+			<p class="ml-4 text-lg font-semibold text-slate-800">${billAmount}</p>
+		</div>
+
+		<!-- Analysis progress or results -->
+		<div class="mt-4">
+			{#if analyzing}
+				<div
+					class="rounded-lg bg-violet-50 p-3"
+					role="progressbar"
+					aria-valuemin="0"
+					aria-valuemax="100"
+					aria-valuenow={progress}
+				>
+					<div class="flex items-start justify-between">
+						<div class="flex flex-1 items-start gap-3">
+							<div class="rounded-full bg-violet-100 p-2">
+								<svg
+									class="h-5 w-5 animate-pulse text-violet-600"
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									stroke="none"
+								>
+									<!-- Large star -->
+									<path d="M12 4L14.4 11.6L22 14L14.4 16.4L12 24L9.6 16.4L2 14L9.6 11.6L12 4Z" />
+
+									<!-- Small star - moved higher and more to the right -->
+									<path d="M18 1L19 4L22 5L19 6L18 9L17 6L14 5L17 4L18 1Z" />
+								</svg>
+							</div>
+							<div class="flex-1">
+								<p class="font-semibold text-violet-900">Analyzing Your Bill</p>
+								<div class="mt-2 w-full">
+									<div class="h-2.5 overflow-hidden rounded-full bg-violet-100">
+										<div
+											class="h-full rounded-full bg-violet-600 transition-all duration-300"
+											style:width="{progress}%"
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<p class="ml-4 text-sm font-medium text-violet-700">
+							{progress.toFixed(1)}%
 						</p>
 					</div>
 				</div>
-			</div>
-		{/if}
+			{:else if savings > 0}
+				<!-- Savings highlight with coverage status -->
+				<div class="rounded-lg bg-violet-50 p-3">
+					<div class="flex items-start justify-between">
+						<div class="flex items-start gap-3">
+							<div class="rounded-full bg-violet-100 p-2">
+								<svg class="h-5 w-5 text-violet-600" viewBox="0 0 20 20" fill="currentColor">
+									<path
+										d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+									/>
+								</svg>
+							</div>
+							<div>
+								<p class="font-semibold text-violet-900">
+									${savings.toFixed(2)} Potential Savings Found
+								</p>
+								<p class="mt-1 text-sm text-violet-700">
+									We found ways to reduce your bill by {Math.round(
+										(savings / parseFloat(billAmount)) * 100
+									)}%
+								</p>
+							</div>
+						</div>
+
+						<!-- Coverage status icons -->
+						<div class="flex items-center gap-2">
+							<div class="group relative">
+								<div class="rounded-full bg-emerald-100 p-1.5">
+									<svg class="h-4 w-4 text-emerald-600" viewBox="0 0 20 20" fill="currentColor">
+										<path
+											d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+										/>
+									</svg>
+								</div>
+								<!-- Tooltip -->
+								<div
+									class="absolute right-0 top-8 z-10 hidden w-48 rounded-lg bg-white p-2 text-xs text-slate-600 shadow-lg group-hover:block"
+								>
+									Service is covered by your plan
+								</div>
+							</div>
+
+							<div class="group relative">
+								<div class="rounded-full bg-amber-100 p-1.5">
+									<svg class="h-4 w-4 text-amber-600" viewBox="0 0 20 20" fill="currentColor">
+										<path
+											d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+										/>
+									</svg>
+								</div>
+								<!-- Tooltip -->
+								<div
+									class="absolute right-0 top-8 z-10 hidden w-48 rounded-lg bg-white p-2 text-xs text-slate-600 shadow-lg group-hover:block"
+								>
+									Pre-authorization required
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{/if}
+		</div>
 	</div>
 
-	<div
-		class="space-y-3 lg:grid lg:grid-cols-5 lg:gap-6 lg:space-y-0"
-		role="list"
-		aria-label="Analysis steps"
-	>
-		<div class="space-y-3 lg:col-span-3">
+	<!-- Two-column layout -->
+	<div class="grid gap-4 lg:grid-cols-2">
+		<!-- Analysis steps -->
+		<div class="space-y-2">
 			{#each ['Checking for billing errors', 'Verifying insurance coverage', 'Analyzing costs for similar services', 'Finding potential savings', 'Summarizing bill details'] as step, i}
-				<div role="listitem">
-					<div
-						class="flex items-center space-x-2 rounded-lg p-2 text-sm text-gray-600 transition-colors hover:bg-gray-100/50"
-					>
+				<div
+					class="flex items-center gap-3 rounded-lg px-3 py-2 transition-colors hover:bg-white/50"
+				>
+					<div class={`rounded-full p-1 ${completedSteps[i] ? 'bg-violet-100' : 'bg-slate-100'}`}>
 						<svg
-							class={`h-5 w-5 ${
-								completedSteps[i]
-									? 'fill-emerald-400 text-emerald-400'
-									: 'stroke-gray-300 text-gray-300'
-							}`}
-							fill="none"
-							viewBox="0 0 24 24"
-							stroke="currentColor"
-							aria-hidden="true"
+							class={`h-4 w-4 ${completedSteps[i] ? 'text-violet-600' : 'text-slate-400'}`}
+							viewBox="0 0 20 20"
+							fill="currentColor"
 						>
 							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+								d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
 							/>
 						</svg>
-						<span>{step}</span>
 					</div>
+					<span class={`text-sm ${completedSteps[i] ? 'text-slate-800' : 'text-slate-500'}`}>
+						{step}
+					</span>
 				</div>
 			{/each}
 		</div>
 
+		<!-- Summary card -->
 		{#if completedSteps[4]}
-			<div
-				class={`mt-4 h-full rounded-lg p-6 lg:col-span-2 lg:mt-0 ${'border border-indigo-100 bg-gradient-to-br from-white/70 to-indigo-50/70 shadow-md'}`}
-				role="region"
-				aria-label="Bill summary"
-			>
-				<div class="flex h-full flex-col justify-between">
-					<div>
-						<div class="space-y-3">
+			<div class="rounded-xl bg-white p-4 shadow-sm">
+				<!-- Savings Opportunities -->
+				<div>
+					<h4 class="mb-2 text-sm font-medium text-slate-800">Savings Opportunities</h4>
+					<div class="space-y-2 text-sm">
+						<div class="flex items-start gap-2">
+							<div class="mt-0.5 rounded-full bg-violet-100 p-1">
+								<svg class="h-3 w-3 text-violet-600" viewBox="0 0 20 20" fill="currentColor">
+									<path
+										d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z"
+									/>
+								</svg>
+							</div>
 							<div>
-								<p class="text-sm text-gray-500">Coverage Status</p>
-								<p class="text-xs text-emerald-600/90">✓ Service is covered by your plan</p>
-								<p class="text-xs text-amber-600">! Pre-authorization may be required</p>
+								<p class="font-medium text-slate-800">Billing Rate Adjustment</p>
+								<p class="text-slate-600">
+									Found lower regional rate for this service. Potential savings of ${(
+										parseFloat(billAmount) * 0.15
+									).toFixed(2)}
+								</p>
 							</div>
 						</div>
-					</div>
 
-					<div class="mt-6">
-						<p class="text-sm text-gray-500">Cost Breakdown</p>
-						<div class="mt-1 space-y-1 text-xs">
-							<div class="flex justify-between">
-								<span class="text-gray-500">Original Bill</span>
-								<span class="text-gray-600">${billAmount}</span>
+						<div class="flex items-start gap-2">
+							<div class="mt-0.5 rounded-full bg-violet-100 p-1">
+								<svg class="h-3 w-3 text-violet-600" viewBox="0 0 20 20" fill="currentColor">
+									<path
+										d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z"
+									/>
+								</svg>
 							</div>
-							<div class="flex justify-between">
-								<span class="text-emerald-600/90">Potential Savings</span>
-								<span class="text-emerald-600/90">-${savings.toFixed(2)}</span>
+							<div>
+								<p class="font-medium text-slate-800">Insurance Network Discount</p>
+								<p class="text-slate-600">
+									Additional in-network discount available. Savings of ${(
+										parseFloat(billAmount) * 0.1
+									).toFixed(2)}
+								</p>
 							</div>
-							<div class="flex justify-between border-t pt-1 font-medium">
-								<span class="text-gray-500">Estimated Final</span>
-								<span class="text-gray-600">${(parseFloat(billAmount) - savings).toFixed(2)}</span>
+						</div>
+
+						<div class="flex items-start gap-2">
+							<div class="mt-0.5 rounded-full bg-violet-100 p-1">
+								<svg class="h-3 w-3 text-violet-600" viewBox="0 0 20 20" fill="currentColor">
+									<path
+										d="M10.75 2.75a.75.75 0 00-1.5 0v8.614L6.295 8.235a.75.75 0 10-1.09 1.03l4.25 4.5a.75.75 0 001.09 0l4.25-4.5a.75.75 0 00-1.09-1.03l-2.955 3.129V2.75z"
+									/>
+								</svg>
 							</div>
+							<div>
+								<p class="font-medium text-slate-800">Duplicate Charge Identified</p>
+								<p class="text-slate-600">
+									Found duplicate billing code. Savings of ${(
+										parseFloat(billAmount) * 0.05
+									).toFixed(2)}
+								</p>
+							</div>
+						</div>
+
+						<div class="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
+							<span class="font-medium text-violet-700">Total Potential Savings</span>
+							<span class="font-medium text-violet-700">${savings.toFixed(2)}</span>
 						</div>
 					</div>
 				</div>
