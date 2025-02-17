@@ -1,2 +1,0 @@
-class UserContextException(Exception):
-    pass
