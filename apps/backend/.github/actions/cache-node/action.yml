@@ -1,0 +1,37 @@
+name: "Node Cache Setup/Restore"
+
+inputs:
+  node-version:
+    description: "Node Version to utilize. Default is 16."
+    required: false
+    default: 20
+
+outputs:
+  cache-hit:
+    description: "Indicates whether Node was cached"
+    value: ${{ steps.node-cache.outputs.cache-hit}}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - name: Cache Node Modules
+      id: node-cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
+    - name: Install Dependencies
+      if: steps.node-cache.cache-hit != 'true'
+      shell: bash
+      run: |
+        npm install

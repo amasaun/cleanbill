@@ -1,0 +1,99 @@
+!jest.config.js
+*.d.ts
+node_modules
+build
+reports
+.idea
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+.dea
+
+.history
+
+shell.nix
+
+cdk.context.json
+
+introspection-results.json
+
+.vscode
+
+.DS_Store
+
+# Installer Logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test & coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis
+.pytest_cache/
+
+# Extras
+*.mo
+*.pot
+docs/_build/
+target/
+
+# IPython (in case it is used)
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+.venv.bak/
+
+# Spyder in case that's used
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# mkdocs
+/site 
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# IDEs
+.idea/
+.vscode/
+
+# os x
+.DS_Store
+
+#cache
+__pycache__/
+
+.pytest-coverage.txt
+
+
+# Environment files
+local-env.sh
+
+!somefile.sh

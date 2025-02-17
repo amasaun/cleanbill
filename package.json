@@ -1,19 +1,20 @@
 {
   "name": "cleanbill",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "apps/*"
   ],
-  "author": "",
-  "license": "ISC",
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "start": "turbo run start",
+    "lint": "turbo run lint",
+    "platform": "pnpm --filter @cleanbill/platform",
+    "platform:dev": "pnpm --filter @cleanbill/platform dev",
+    "platform:build": "pnpm --filter @cleanbill/platform build"
+  },
+  "devDependencies": {
+    "turbo": "^1.12.4"
   }
 }

@@ -1,0 +1,57 @@
+name: Deploy to Environment
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      region:
+        required: true
+        type: string
+    secrets:
+      CDK_RELEASE_ROLE_V2:
+        required: true
+
+jobs:
+  deploy_build:
+    name: Deploy to ${{inputs.environment}}
+    runs-on: ubuntu-latest
+    environment: ${{inputs.environment}}
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup NodeJs
+        uses: actions/setup-node@v1
+        with:
+          node-version: 20
+
+      - name: Node Setup
+        id: cache-node-modules
+        uses: ./.github/actions/cache-node
+        with:
+          node-version: 20
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{inputs.environment}}-artifact
+          path: ${{inputs.environment}}/cdk.out
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{secrets.CDK_RELEASE_ROLE_V2}}
+          aws-region: ${{inputs.region}}
+
+      - name: Deploy To ${{inputs.environment}}
+        run: |
+          npm run cdk deploy -- \
+          --app ${{inputs.environment}}/cdk.out \
+          --all \
+          --require-approval never
