@@ -14,7 +14,27 @@ type Bill = {
   amount: number;
   description: string;
   status: "Imported" | "Analyzed" | "Negotiating" | "Completed";
-  potentialSavings?: number;
+  analysis?: {
+    duplicateCharges: Array<{
+      description: string;
+      originalAmount: number;
+      duplicateAmount: number;
+      potential_saving: number;
+    }>;
+    overcharges: Array<{
+      description: string;
+      originalAmount: number;
+      marketRate: number;
+      potential_saving: number;
+    }>;
+    negotiableItems: Array<{
+      description: string;
+      originalAmount: number;
+      recommendedAmount: number;
+      potential_saving: number;
+    }>;
+    totalPotentialSavings: number;
+  };
 };
 
 type ConnectedProvider = {
@@ -30,7 +50,7 @@ export default function DashboardPage() {
   const [bills, setBills] = useState<Bill[]>(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("savedBills");
-      return saved ? JSON.parse(saved) : [];
+      return saved ? (JSON.parse(saved) as Bill[]) : [];
     }
     return [];
   });
@@ -38,13 +58,14 @@ export default function DashboardPage() {
     useState<ConnectedProvider | null>(() => {
       if (typeof window !== "undefined") {
         const saved = localStorage.getItem("connectedProvider");
-        return saved ? JSON.parse(saved) : null;
+        return saved ? (JSON.parse(saved) as ConnectedProvider) : null;
       }
       return null;
     });
-  const [importedBills, setImportedBills] = useState<any[]>(() => {
+  const [importedBills, setImportedBills] = useState<Bill[]>(() => {
     if (typeof window !== "undefined") {
-      return JSON.parse(localStorage.getItem("importedBills") || "[]");
+      const saved = localStorage.getItem("importedBills");
+      return saved ? (JSON.parse(saved) as Bill[]) : [];
     }
     return [];
   });
@@ -60,7 +81,7 @@ export default function DashboardPage() {
   const startSavingsProcess = (billIds: string[]) => {
     const updatedBills = bills.map((bill) =>
       billIds.includes(bill.id)
-        ? { ...bill, status: "Negotiating Savings" }
+        ? { ...bill, status: "Negotiating" as const }
         : bill
     );
     setBills(updatedBills);
@@ -69,7 +90,7 @@ export default function DashboardPage() {
 
   const startNegotiation = (billId: string) => {
     const updatedBills = importedBills.map((bill) =>
-      bill.id === billId ? { ...bill, status: "Negotiating" } : bill
+      bill.id === billId ? { ...bill, status: "Negotiating" as const } : bill
     );
     setImportedBills(updatedBills);
     localStorage.setItem("importedBills", JSON.stringify(updatedBills));
@@ -84,38 +105,36 @@ export default function DashboardPage() {
           const totalAmount = bill.amount;
           const targetSavings = totalAmount * 0.3;
 
-          const analysis = {
-            duplicateCharges: [
-              {
-                description: "Lab Test - Complete Blood Count",
-                originalAmount: Math.round(totalAmount * 0.15),
-                duplicateAmount: Math.round(totalAmount * 0.15),
-                potential_saving: Math.round(totalAmount * 0.15),
-              },
-            ],
-            overcharges: [
-              {
-                description: "Medical Supplies",
-                originalAmount: Math.round(totalAmount * 0.1),
-                marketRate: Math.round(totalAmount * 0.07),
-                potential_saving: Math.round(totalAmount * 0.03),
-              },
-            ],
-            negotiableItems: [
-              {
-                description: "Facility Fee",
-                originalAmount: Math.round(totalAmount * 0.1),
-                recommendedAmount: Math.round(totalAmount * 0.08),
-                potential_saving: Math.round(totalAmount * 0.02),
-              },
-            ],
-            totalPotentialSavings: Math.round(targetSavings),
-          };
-
           return {
             ...bill,
-            status: "Analyzed",
-            analysis,
+            status: "Analyzed" as const,
+            analysis: {
+              duplicateCharges: [
+                {
+                  description: "Lab Test - Complete Blood Count",
+                  originalAmount: Math.round(totalAmount * 0.15),
+                  duplicateAmount: Math.round(totalAmount * 0.15),
+                  potential_saving: Math.round(totalAmount * 0.15),
+                },
+              ],
+              overcharges: [
+                {
+                  description: "Medical Supplies",
+                  originalAmount: Math.round(totalAmount * 0.1),
+                  marketRate: Math.round(totalAmount * 0.07),
+                  potential_saving: Math.round(totalAmount * 0.03),
+                },
+              ],
+              negotiableItems: [
+                {
+                  description: "Facility Fee",
+                  originalAmount: Math.round(totalAmount * 0.1),
+                  recommendedAmount: Math.round(totalAmount * 0.08),
+                  potential_saving: Math.round(totalAmount * 0.02),
+                },
+              ],
+              totalPotentialSavings: Math.round(targetSavings),
+            },
           };
         }
         return bill;
@@ -178,7 +197,7 @@ export default function DashboardPage() {
                 );
                 localStorage.setItem(
                   "completedSteps",
-                  JSON.stringify([...new Set([...currentSteps, 1])])
+                  JSON.stringify(Array.from(new Set([...currentSteps, 1])))
                 );
               }}
               className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -429,161 +448,167 @@ export default function DashboardPage() {
                           {/* Savings Analysis Grid */}
                           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                             {/* Duplicate Charges */}
-                            {bill.analysis?.duplicateCharges?.length > 0 && (
-                              <div className="rounded-lg border border-red-100 bg-red-50 p-4">
-                                <h5 className="flex items-center text-sm font-medium text-red-800">
-                                  <svg
-                                    className="mr-2 h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M12 4v16m8-8H4"
-                                    />
-                                  </svg>
-                                  Duplicate Charges Found
-                                </h5>
-                                <div className="mt-3 space-y-2">
-                                  {bill.analysis.duplicateCharges.map(
-                                    (charge, idx) => (
-                                      <div
-                                        key={idx}
-                                        className="rounded-md bg-white p-3 shadow-sm"
-                                      >
-                                        <p className="font-medium text-gray-900">
-                                          {charge.description}
-                                        </p>
-                                        <div className="mt-1 flex items-center justify-between text-sm">
-                                          <span className="text-red-600">
-                                            Charged Twice
-                                          </span>
-                                          <span className="font-medium text-red-600">
-                                            $
-                                            {charge.originalAmount.toLocaleString()}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    )
-                                  )}
-                                </div>
-                              </div>
-                            )}
-
-                            {/* Above Market Rate */}
-                            {bill.analysis?.overcharges?.length > 0 && (
-                              <div className="rounded-lg border border-orange-100 bg-orange-50 p-4">
-                                <h5 className="flex items-center text-sm font-medium text-orange-800">
-                                  <svg
-                                    className="mr-2 h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                                    />
-                                  </svg>
-                                  Above Market Rate
-                                </h5>
-                                <div className="mt-3 space-y-2">
-                                  {bill.analysis.overcharges.map(
-                                    (charge, idx) => (
-                                      <div
-                                        key={idx}
-                                        className="rounded-md bg-white p-3 shadow-sm"
-                                      >
-                                        <p className="font-medium text-gray-900">
-                                          {charge.description}
-                                        </p>
-                                        <div className="mt-2 space-y-1 text-sm">
-                                          <div className="flex justify-between">
-                                            <span className="text-orange-600">
-                                              Current Rate
+                            {bill.analysis &&
+                              bill.analysis.duplicateCharges &&
+                              bill.analysis.duplicateCharges.length > 0 && (
+                                <div className="rounded-lg border border-red-100 bg-red-50 p-4">
+                                  <h5 className="flex items-center text-sm font-medium text-red-800">
+                                    <svg
+                                      className="mr-2 h-4 w-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 4v16m8-8H4"
+                                      />
+                                    </svg>
+                                    Duplicate Charges Found
+                                  </h5>
+                                  <div className="mt-3 space-y-2">
+                                    {bill.analysis.duplicateCharges.map(
+                                      (charge, idx) => (
+                                        <div
+                                          key={idx}
+                                          className="rounded-md bg-white p-3 shadow-sm"
+                                        >
+                                          <p className="font-medium text-gray-900">
+                                            {charge.description}
+                                          </p>
+                                          <div className="mt-1 flex items-center justify-between text-sm">
+                                            <span className="text-red-600">
+                                              Charged Twice
                                             </span>
-                                            <span className="font-medium text-orange-600">
+                                            <span className="font-medium text-red-600">
                                               $
                                               {charge.originalAmount.toLocaleString()}
                                             </span>
                                           </div>
-                                          <div className="flex justify-between">
-                                            <span className="text-green-600">
-                                              Market Rate
-                                            </span>
-                                            <span className="font-medium text-green-600">
-                                              $
-                                              {charge.marketRate.toLocaleString()}
-                                            </span>
+                                        </div>
+                                      )
+                                    )}
+                                  </div>
+                                </div>
+                              )}
+
+                            {/* Above Market Rate */}
+                            {bill.analysis &&
+                              bill.analysis.overcharges &&
+                              bill.analysis.overcharges.length > 0 && (
+                                <div className="rounded-lg border border-orange-100 bg-orange-50 p-4">
+                                  <h5 className="flex items-center text-sm font-medium text-orange-800">
+                                    <svg
+                                      className="mr-2 h-4 w-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
+                                      />
+                                    </svg>
+                                    Above Market Rate
+                                  </h5>
+                                  <div className="mt-3 space-y-2">
+                                    {bill.analysis.overcharges.map(
+                                      (charge, idx) => (
+                                        <div
+                                          key={idx}
+                                          className="rounded-md bg-white p-3 shadow-sm"
+                                        >
+                                          <p className="font-medium text-gray-900">
+                                            {charge.description}
+                                          </p>
+                                          <div className="mt-2 space-y-1 text-sm">
+                                            <div className="flex justify-between">
+                                              <span className="text-orange-600">
+                                                Current Rate
+                                              </span>
+                                              <span className="font-medium text-orange-600">
+                                                $
+                                                {charge.originalAmount.toLocaleString()}
+                                              </span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-green-600">
+                                                Market Rate
+                                              </span>
+                                              <span className="font-medium text-green-600">
+                                                $
+                                                {charge.marketRate.toLocaleString()}
+                                              </span>
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    )
-                                  )}
+                                      )
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
 
                             {/* Negotiation Opportunities */}
-                            {bill.analysis?.negotiableItems?.length > 0 && (
-                              <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
-                                <h5 className="flex items-center text-sm font-medium text-blue-800">
-                                  <svg
-                                    className="mr-2 h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-                                    />
-                                  </svg>
-                                  Negotiation Opportunities
-                                </h5>
-                                <div className="mt-3 space-y-2">
-                                  {bill.analysis.negotiableItems.map(
-                                    (item, idx) => (
-                                      <div
-                                        key={idx}
-                                        className="rounded-md bg-white p-3 shadow-sm"
-                                      >
-                                        <p className="font-medium text-gray-900">
-                                          {item.description}
-                                        </p>
-                                        <div className="mt-2 space-y-1 text-sm">
-                                          <div className="flex justify-between">
-                                            <span className="text-gray-600">
-                                              Current Amount
-                                            </span>
-                                            <span className="font-medium text-gray-600">
-                                              $
-                                              {item.originalAmount.toLocaleString()}
-                                            </span>
-                                          </div>
-                                          <div className="flex justify-between">
-                                            <span className="text-blue-600">
-                                              Target Amount
-                                            </span>
-                                            <span className="font-medium text-blue-600">
-                                              $
-                                              {item.recommendedAmount.toLocaleString()}
-                                            </span>
+                            {bill.analysis &&
+                              bill.analysis.negotiableItems &&
+                              bill.analysis.negotiableItems.length > 0 && (
+                                <div className="rounded-lg border border-blue-100 bg-blue-50 p-4">
+                                  <h5 className="flex items-center text-sm font-medium text-blue-800">
+                                    <svg
+                                      className="mr-2 h-4 w-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
+                                      />
+                                    </svg>
+                                    Negotiation Opportunities
+                                  </h5>
+                                  <div className="mt-3 space-y-2">
+                                    {bill.analysis.negotiableItems.map(
+                                      (item, idx) => (
+                                        <div
+                                          key={idx}
+                                          className="rounded-md bg-white p-3 shadow-sm"
+                                        >
+                                          <p className="font-medium text-gray-900">
+                                            {item.description}
+                                          </p>
+                                          <div className="mt-2 space-y-1 text-sm">
+                                            <div className="flex justify-between">
+                                              <span className="text-gray-600">
+                                                Current Amount
+                                              </span>
+                                              <span className="font-medium text-gray-600">
+                                                $
+                                                {item.originalAmount.toLocaleString()}
+                                              </span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                              <span className="text-blue-600">
+                                                Target Amount
+                                              </span>
+                                              <span className="font-medium text-blue-600">
+                                                $
+                                                {item.recommendedAmount.toLocaleString()}
+                                              </span>
+                                            </div>
                                           </div>
                                         </div>
-                                      </div>
-                                    )
-                                  )}
+                                      )
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
                           </div>
                         </td>
                       </tr>
