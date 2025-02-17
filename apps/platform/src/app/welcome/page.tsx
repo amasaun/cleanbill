@@ -1053,7 +1053,7 @@ const AnalysisResults = ({
                 onClick={handleStartSavings}
                 className="inline-flex items-center rounded-lg bg-white px-6 py-3 text-base font-medium text-blue-600 shadow-sm hover:bg-blue-50"
               >
-                Start Savings Process
+                Start Saving
               </button>
               <Link
                 href="/dashboard"
