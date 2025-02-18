@@ -436,141 +436,144 @@ export default function DashboardPage() {
                           </h4>
                           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                             {/* Duplicate Charges (Red) */}
-                            {bill.analysis?.duplicateCharges?.length > 0 && (
-                              <div className="rounded-lg border border-red-100 bg-red-50 p-3">
-                                <h5 className="flex items-center text-sm font-medium text-red-800">
-                                  <svg
-                                    className="mr-2 h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M12 4v16m8-8H4"
-                                    />
-                                  </svg>
-                                  Duplicate Charges Found
-                                </h5>
-                                <div className="mt-3 space-y-2">
-                                  {bill.analysis.duplicateCharges.map(
-                                    (charge, idx) => (
-                                      <div
-                                        key={idx}
-                                        className="rounded-md bg-white p-3 shadow-sm"
-                                      >
-                                        <p className="font-medium text-gray-900">
-                                          {charge.description}
-                                        </p>
-                                        <div className="mt-1 flex items-center justify-between text-sm">
-                                          <span className="text-red-600">
-                                            Charged Twice
-                                          </span>
-                                          <span className="font-medium text-red-600">
-                                            $
-                                            {charge.originalAmount.toLocaleString()}
-                                          </span>
+                            {bill.analysis?.duplicateCharges &&
+                              bill.analysis.duplicateCharges.length > 0 && (
+                                <div className="rounded-lg border border-red-100 bg-red-50 p-3">
+                                  <h5 className="flex items-center text-sm font-medium text-red-800">
+                                    <svg
+                                      className="mr-2 h-4 w-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 4v16m8-8H4"
+                                      />
+                                    </svg>
+                                    Duplicate Charges Found
+                                  </h5>
+                                  <div className="mt-3 space-y-2">
+                                    {bill.analysis.duplicateCharges.map(
+                                      (charge, idx) => (
+                                        <div
+                                          key={idx}
+                                          className="rounded-md bg-white p-3 shadow-sm"
+                                        >
+                                          <p className="font-medium text-gray-900">
+                                            {charge.description}
+                                          </p>
+                                          <div className="mt-1 flex items-center justify-between text-sm">
+                                            <span className="text-red-600">
+                                              Charged Twice
+                                            </span>
+                                            <span className="font-medium text-red-600">
+                                              $
+                                              {charge.originalAmount.toLocaleString()}
+                                            </span>
+                                          </div>
                                         </div>
-                                      </div>
-                                    )
-                                  )}
+                                      )
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
 
                             {/* Overcharges (Amber) */}
-                            {bill.analysis?.overcharges?.length > 0 && (
-                              <div className="rounded-lg border border-amber-100 bg-amber-50 p-3">
-                                <h5 className="flex items-center text-sm font-medium text-amber-800">
-                                  <svg
-                                    className="mr-2 h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                                    />
-                                  </svg>
-                                  Above Market Rate
-                                </h5>
-                                <div className="mt-3 space-y-2">
-                                  {bill.analysis.overcharges.map(
-                                    (charge, idx) => (
-                                      <div
-                                        key={idx}
-                                        className="rounded-md bg-white p-3 shadow-sm"
-                                      >
-                                        <p className="font-medium text-gray-900">
-                                          {charge.description}
-                                        </p>
-                                        <div className="mt-1 flex items-center justify-between text-sm">
-                                          <span className="text-amber-600">
-                                            Market Rate: $
-                                            {charge.marketRate.toLocaleString()}
-                                          </span>
-                                          <span className="font-medium text-amber-600">
-                                            Charged: $
-                                            {charge.originalAmount.toLocaleString()}
-                                          </span>
+                            {bill.analysis?.overcharges &&
+                              bill.analysis.overcharges.length > 0 && (
+                                <div className="rounded-lg border border-amber-100 bg-amber-50 p-3">
+                                  <h5 className="flex items-center text-sm font-medium text-amber-800">
+                                    <svg
+                                      className="mr-2 h-4 w-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                                      />
+                                    </svg>
+                                    Above Market Rate
+                                  </h5>
+                                  <div className="mt-3 space-y-2">
+                                    {bill.analysis.overcharges.map(
+                                      (charge, idx) => (
+                                        <div
+                                          key={idx}
+                                          className="rounded-md bg-white p-3 shadow-sm"
+                                        >
+                                          <p className="font-medium text-gray-900">
+                                            {charge.description}
+                                          </p>
+                                          <div className="mt-1 flex items-center justify-between text-sm">
+                                            <span className="text-amber-600">
+                                              Market Rate: $
+                                              {charge.marketRate.toLocaleString()}
+                                            </span>
+                                            <span className="font-medium text-amber-600">
+                                              Charged: $
+                                              {charge.originalAmount.toLocaleString()}
+                                            </span>
+                                          </div>
                                         </div>
-                                      </div>
-                                    )
-                                  )}
+                                      )
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
 
                             {/* Additional Savings (Blue) */}
-                            {bill.analysis?.negotiableItems?.length > 0 && (
-                              <div className="rounded-lg border border-blue-100 bg-blue-50 p-3">
-                                <h5 className="flex items-center text-sm font-medium text-blue-800">
-                                  <svg
-                                    className="mr-2 h-4 w-4"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke="currentColor"
-                                  >
-                                    <path
-                                      strokeLinecap="round"
-                                      strokeLinejoin="round"
-                                      strokeWidth={2}
-                                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                                    />
-                                  </svg>
-                                  Additional Savings
-                                </h5>
-                                <div className="mt-3 space-y-2">
-                                  {bill.analysis.negotiableItems.map(
-                                    (item, idx) => (
-                                      <div
-                                        key={idx}
-                                        className="rounded-md bg-white p-3 shadow-sm"
-                                      >
-                                        <p className="font-medium text-gray-900">
-                                          {item.description}
-                                        </p>
-                                        <div className="mt-1 flex items-center justify-between text-sm">
-                                          <span className="text-blue-600">
-                                            Recommended: $
-                                            {item.recommendedAmount.toLocaleString()}
-                                          </span>
-                                          <span className="font-medium text-blue-600">
-                                            Current: $
-                                            {item.originalAmount.toLocaleString()}
-                                          </span>
+                            {bill.analysis?.negotiableItems &&
+                              bill.analysis.negotiableItems.length > 0 && (
+                                <div className="rounded-lg border border-blue-100 bg-blue-50 p-3">
+                                  <h5 className="flex items-center text-sm font-medium text-blue-800">
+                                    <svg
+                                      className="mr-2 h-4 w-4"
+                                      fill="none"
+                                      viewBox="0 0 24 24"
+                                      stroke="currentColor"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                      />
+                                    </svg>
+                                    Additional Savings
+                                  </h5>
+                                  <div className="mt-3 space-y-2">
+                                    {bill.analysis.negotiableItems.map(
+                                      (item, idx) => (
+                                        <div
+                                          key={idx}
+                                          className="rounded-md bg-white p-3 shadow-sm"
+                                        >
+                                          <p className="font-medium text-gray-900">
+                                            {item.description}
+                                          </p>
+                                          <div className="mt-1 flex items-center justify-between text-sm">
+                                            <span className="text-blue-600">
+                                              Recommended: $
+                                              {item.recommendedAmount.toLocaleString()}
+                                            </span>
+                                            <span className="font-medium text-blue-600">
+                                              Current: $
+                                              {item.originalAmount.toLocaleString()}
+                                            </span>
+                                          </div>
                                         </div>
-                                      </div>
-                                    )
-                                  )}
+                                      )
+                                    )}
+                                  </div>
                                 </div>
-                              </div>
-                            )}
+                              )}
                           </div>
                         </div>
                       </div>
@@ -817,143 +820,146 @@ export default function DashboardPage() {
                                   </h4>
                                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                                     {/* Duplicate Charges (Red) */}
-                                    {bill.analysis?.duplicateCharges?.length >
-                                      0 && (
-                                      <div className="rounded-lg border border-red-100 bg-red-50 p-3">
-                                        <h5 className="flex items-center text-sm font-medium text-red-800">
-                                          <svg
-                                            className="mr-2 h-4 w-4"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                          >
-                                            <path
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M12 4v16m8-8H4"
-                                            />
-                                          </svg>
-                                          Duplicate Charges Found
-                                        </h5>
-                                        <div className="mt-3 space-y-2">
-                                          {bill.analysis.duplicateCharges.map(
-                                            (charge, idx) => (
-                                              <div
-                                                key={idx}
-                                                className="rounded-md bg-white p-3 shadow-sm"
-                                              >
-                                                <p className="font-medium text-gray-900">
-                                                  {charge.description}
-                                                </p>
-                                                <div className="mt-1 flex items-center justify-between text-sm">
-                                                  <span className="text-red-600">
-                                                    Charged Twice
-                                                  </span>
-                                                  <span className="font-medium text-red-600">
-                                                    $
-                                                    {charge.originalAmount.toLocaleString()}
-                                                  </span>
+                                    {bill.analysis?.duplicateCharges &&
+                                      bill.analysis.duplicateCharges.length >
+                                        0 && (
+                                        <div className="rounded-lg border border-red-100 bg-red-50 p-3">
+                                          <h5 className="flex items-center text-sm font-medium text-red-800">
+                                            <svg
+                                              className="mr-2 h-4 w-4"
+                                              fill="none"
+                                              viewBox="0 0 24 24"
+                                              stroke="currentColor"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 4v16m8-8H4"
+                                              />
+                                            </svg>
+                                            Duplicate Charges Found
+                                          </h5>
+                                          <div className="mt-3 space-y-2">
+                                            {bill.analysis.duplicateCharges.map(
+                                              (charge, idx) => (
+                                                <div
+                                                  key={idx}
+                                                  className="rounded-md bg-white p-3 shadow-sm"
+                                                >
+                                                  <p className="font-medium text-gray-900">
+                                                    {charge.description}
+                                                  </p>
+                                                  <div className="mt-1 flex items-center justify-between text-sm">
+                                                    <span className="text-red-600">
+                                                      Charged Twice
+                                                    </span>
+                                                    <span className="font-medium text-red-600">
+                                                      $
+                                                      {charge.originalAmount.toLocaleString()}
+                                                    </span>
+                                                  </div>
                                                 </div>
-                                              </div>
-                                            )
-                                          )}
+                                              )
+                                            )}
+                                          </div>
                                         </div>
-                                      </div>
-                                    )}
+                                      )}
 
                                     {/* Overcharges (Amber) */}
-                                    {bill.analysis?.overcharges?.length > 0 && (
-                                      <div className="rounded-lg border border-amber-100 bg-amber-50 p-3">
-                                        <h5 className="flex items-center text-sm font-medium text-amber-800">
-                                          <svg
-                                            className="mr-2 h-4 w-4"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                          >
-                                            <path
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                                            />
-                                          </svg>
-                                          Above Market Rate
-                                        </h5>
-                                        <div className="mt-3 space-y-2">
-                                          {bill.analysis.overcharges.map(
-                                            (charge, idx) => (
-                                              <div
-                                                key={idx}
-                                                className="rounded-md bg-white p-3 shadow-sm"
-                                              >
-                                                <p className="font-medium text-gray-900">
-                                                  {charge.description}
-                                                </p>
-                                                <div className="mt-1 flex items-center justify-between text-sm">
-                                                  <span className="text-amber-600">
-                                                    Market Rate: $
-                                                    {charge.marketRate.toLocaleString()}
-                                                  </span>
-                                                  <span className="font-medium text-amber-600">
-                                                    Charged: $
-                                                    {charge.originalAmount.toLocaleString()}
-                                                  </span>
+                                    {bill.analysis?.overcharges &&
+                                      bill.analysis.overcharges.length > 0 && (
+                                        <div className="rounded-lg border border-amber-100 bg-amber-50 p-3">
+                                          <h5 className="flex items-center text-sm font-medium text-amber-800">
+                                            <svg
+                                              className="mr-2 h-4 w-4"
+                                              fill="none"
+                                              viewBox="0 0 24 24"
+                                              stroke="currentColor"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                                              />
+                                            </svg>
+                                            Above Market Rate
+                                          </h5>
+                                          <div className="mt-3 space-y-2">
+                                            {bill.analysis.overcharges.map(
+                                              (charge, idx) => (
+                                                <div
+                                                  key={idx}
+                                                  className="rounded-md bg-white p-3 shadow-sm"
+                                                >
+                                                  <p className="font-medium text-gray-900">
+                                                    {charge.description}
+                                                  </p>
+                                                  <div className="mt-1 flex items-center justify-between text-sm">
+                                                    <span className="text-amber-600">
+                                                      Market Rate: $
+                                                      {charge.marketRate.toLocaleString()}
+                                                    </span>
+                                                    <span className="font-medium text-amber-600">
+                                                      Charged: $
+                                                      {charge.originalAmount.toLocaleString()}
+                                                    </span>
+                                                  </div>
                                                 </div>
-                                              </div>
-                                            )
-                                          )}
+                                              )
+                                            )}
+                                          </div>
                                         </div>
-                                      </div>
-                                    )}
+                                      )}
 
                                     {/* Additional Savings (Blue) */}
-                                    {bill.analysis?.negotiableItems?.length >
-                                      0 && (
-                                      <div className="rounded-lg border border-blue-100 bg-blue-50 p-3">
-                                        <h5 className="flex items-center text-sm font-medium text-blue-800">
-                                          <svg
-                                            className="mr-2 h-4 w-4"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke="currentColor"
-                                          >
-                                            <path
-                                              strokeLinecap="round"
-                                              strokeLinejoin="round"
-                                              strokeWidth={2}
-                                              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                                            />
-                                          </svg>
-                                          Additional Savings
-                                        </h5>
-                                        <div className="mt-3 space-y-2">
-                                          {bill.analysis.negotiableItems.map(
-                                            (item, idx) => (
-                                              <div
-                                                key={idx}
-                                                className="rounded-md bg-white p-3 shadow-sm"
-                                              >
-                                                <p className="font-medium text-gray-900">
-                                                  {item.description}
-                                                </p>
-                                                <div className="mt-1 flex items-center justify-between text-sm">
-                                                  <span className="text-blue-600">
-                                                    Recommended: $
-                                                    {item.recommendedAmount.toLocaleString()}
-                                                  </span>
-                                                  <span className="font-medium text-blue-600">
-                                                    Current: $
-                                                    {item.originalAmount.toLocaleString()}
-                                                  </span>
+                                    {bill.analysis?.negotiableItems &&
+                                      bill.analysis.negotiableItems.length >
+                                        0 && (
+                                        <div className="rounded-lg border border-blue-100 bg-blue-50 p-3">
+                                          <h5 className="flex items-center text-sm font-medium text-blue-800">
+                                            <svg
+                                              className="mr-2 h-4 w-4"
+                                              fill="none"
+                                              viewBox="0 0 24 24"
+                                              stroke="currentColor"
+                                            >
+                                              <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                              />
+                                            </svg>
+                                            Additional Savings
+                                          </h5>
+                                          <div className="mt-3 space-y-2">
+                                            {bill.analysis.negotiableItems.map(
+                                              (item, idx) => (
+                                                <div
+                                                  key={idx}
+                                                  className="rounded-md bg-white p-3 shadow-sm"
+                                                >
+                                                  <p className="font-medium text-gray-900">
+                                                    {item.description}
+                                                  </p>
+                                                  <div className="mt-1 flex items-center justify-between text-sm">
+                                                    <span className="text-blue-600">
+                                                      Recommended: $
+                                                      {item.recommendedAmount.toLocaleString()}
+                                                    </span>
+                                                    <span className="font-medium text-blue-600">
+                                                      Current: $
+                                                      {item.originalAmount.toLocaleString()}
+                                                    </span>
+                                                  </div>
                                                 </div>
-                                              </div>
-                                            )
-                                          )}
+                                              )
+                                            )}
+                                          </div>
                                         </div>
-                                      </div>
-                                    )}
+                                      )}
                                   </div>
                                 </div>
                               </div>

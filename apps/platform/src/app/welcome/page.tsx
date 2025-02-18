@@ -195,8 +195,8 @@ export default function DashboardPage() {
       status: completedSteps.includes(1)
         ? "completed"
         : currentStep === 1
-        ? "current"
-        : "upcoming",
+          ? "current"
+          : "upcoming",
       icon: (
         <svg
           className="h-6 w-6"
@@ -220,8 +220,8 @@ export default function DashboardPage() {
       status: completedSteps.includes(2)
         ? "completed"
         : currentStep === 2
-        ? "current"
-        : "upcoming",
+          ? "current"
+          : "upcoming",
       icon: (
         <svg
           className="h-6 w-6"
@@ -245,8 +245,8 @@ export default function DashboardPage() {
       status: completedSteps.includes(3)
         ? "completed"
         : currentStep === 3
-        ? "current"
-        : "upcoming",
+          ? "current"
+          : "upcoming",
       icon: (
         <svg
           className="h-6 w-6"
@@ -628,8 +628,8 @@ export default function DashboardPage() {
                       step.status === "completed"
                         ? "opacity-100 cursor-pointer"
                         : step.status === "current"
-                        ? "opacity-75"
-                        : "opacity-50"
+                          ? "opacity-75"
+                          : "opacity-50"
                     }`}
                     onClick={() =>
                       step.status === "completed" && handleStepClick(step.id)
@@ -641,8 +641,8 @@ export default function DashboardPage() {
                           step.status === "completed"
                             ? "bg-green-500 text-white ring-2 ring-green-500 ring-offset-2"
                             : step.status === "current"
-                            ? "bg-blue-500 text-white ring-2 ring-blue-500 ring-offset-2"
-                            : "bg-white text-gray-400 ring-2 ring-gray-200 ring-offset-2"
+                              ? "bg-blue-500 text-white ring-2 ring-blue-500 ring-offset-2"
+                              : "bg-white text-gray-400 ring-2 ring-gray-200 ring-offset-2"
                         }`}
                       >
                         {step.status === "completed" ? (
@@ -672,8 +672,8 @@ export default function DashboardPage() {
                             step.status === "completed"
                               ? "text-gray-900"
                               : step.status === "current"
-                              ? "text-gray-900"
-                              : "text-gray-500"
+                                ? "text-gray-900"
+                                : "text-gray-500"
                           }`}
                         >
                           {step.name}
@@ -683,8 +683,8 @@ export default function DashboardPage() {
                             step.status === "completed"
                               ? "text-gray-600"
                               : step.status === "current"
-                              ? "text-gray-600"
-                              : "text-gray-400"
+                                ? "text-gray-600"
+                                : "text-gray-400"
                           }`}
                         >
                           {step.description}
@@ -753,8 +753,8 @@ export default function DashboardPage() {
                     step.status === "completed"
                       ? "opacity-100 cursor-pointer"
                       : step.status === "current"
-                      ? "opacity-75"
-                      : "opacity-50"
+                        ? "opacity-75"
+                        : "opacity-50"
                   }`}
                   onClick={() =>
                     step.status === "completed" && handleStepClick(step.id)
@@ -766,8 +766,8 @@ export default function DashboardPage() {
                         step.status === "completed"
                           ? "bg-green-500 text-white ring-2 ring-green-500 ring-offset-2"
                           : step.status === "current"
-                          ? "bg-blue-500 text-white ring-2 ring-blue-500 ring-offset-2"
-                          : "bg-white text-gray-400 ring-2 ring-gray-200 ring-offset-2"
+                            ? "bg-blue-500 text-white ring-2 ring-blue-500 ring-offset-2"
+                            : "bg-white text-gray-400 ring-2 ring-gray-200 ring-offset-2"
                       }`}
                     >
                       {step.status === "completed" ? (
@@ -797,8 +797,8 @@ export default function DashboardPage() {
                           step.status === "completed"
                             ? "text-gray-900"
                             : step.status === "current"
-                            ? "text-gray-900"
-                            : "text-gray-500"
+                              ? "text-gray-900"
+                              : "text-gray-500"
                         }`}
                       >
                         {step.name}
@@ -808,8 +808,8 @@ export default function DashboardPage() {
                           step.status === "completed"
                             ? "text-gray-600"
                             : step.status === "current"
-                            ? "text-gray-600"
-                            : "text-gray-400"
+                              ? "text-gray-600"
+                              : "text-gray-400"
                         }`}
                       >
                         {step.description}
