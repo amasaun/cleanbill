@@ -217,11 +217,13 @@ export default function DashboardPage() {
       id: 2,
       name: "Import Bills",
       description: "We'll securely fetch your medical bills and EOBs",
-      status: completedSteps.includes(2)
+      status: analysisComplete
         ? "completed"
-        : currentStep === 2
-          ? "current"
-          : "upcoming",
+        : completedSteps.includes(2)
+          ? "completed"
+          : currentStep === 2
+            ? "current"
+            : "upcoming",
       icon: (
         <svg
           className="h-6 w-6"
@@ -242,11 +244,13 @@ export default function DashboardPage() {
       id: 3,
       name: "Review Savings",
       description: "Discover potential savings in your bills",
-      status: completedSteps.includes(3)
-        ? "completed"
-        : currentStep === 3
-          ? "current"
-          : "upcoming",
+      status: analysisComplete
+        ? "current"
+        : completedSteps.includes(3)
+          ? "completed"
+          : currentStep === 3
+            ? "current"
+            : "upcoming",
       icon: (
         <svg
           className="h-6 w-6"
