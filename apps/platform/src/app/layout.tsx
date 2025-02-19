@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: "cleanbill - Dashboard",
   description: "Manage your healthcare bills with cleanbill",
   icons: {
-    icon: "/images/3.png",
+    icon: "/images/icon-blue.png",
   },
 };
 
