@@ -71,9 +71,6 @@ export default function AuthPage() {
                     brand: "#404040",
                     brandAccent: "#262626",
                   },
-                  borderRadii: {
-                    inputButton: "12px",
-                  },
                 },
               },
               style: {
