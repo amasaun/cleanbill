@@ -13,7 +13,9 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (!loading && user) {
-      router.push("/welcome");
+      const finishedWelcomeFlow =
+        localStorage.getItem("finishedWelcomeFlow") === "true";
+      router.push(finishedWelcomeFlow ? "/dashboard" : "/welcome");
     }
   }, [user, loading, router]);
 
@@ -48,18 +50,17 @@ export default function AuthPage() {
 
   return (
     <div
-      className="fixed inset-x-0 top-[64px] flex justify-center bg-gray-50"
+      className="fixed inset-x-0 top-[64px] flex items-center justify-center bg-gray-50"
       style={{ height: "calc(100vh - 64px)" }}
     >
-      <div className="w-[300px] pt-8">
-        <div className="text-center mb-4">
-          <h2 className="text-lg font-bold">Welcome to cleanbill</h2>
-          <p className="text-xs text-gray-600">
-            Sign in or create an account to continue
-          </p>
+      <div className="w-[440px] p-8">
+        <div className="text-center mb-6">
+          <h2 className="text-2xl font-semibold text-gray-900">
+            Sign in / Sign up
+          </h2>
         </div>
 
-        <div className="bg-white shadow rounded-lg">
+        <div className="bg-white shadow-sm rounded-2xl p-8">
           <Auth
             supabaseClient={supabase}
             appearance={{
@@ -70,46 +71,44 @@ export default function AuthPage() {
                     brand: "#404040",
                     brandAccent: "#262626",
                   },
+                  borderRadii: {
+                    inputButton: "12px",
+                  },
                 },
               },
               style: {
                 button: {
-                  padding: "4px 8px",
-                  fontSize: "13px",
-                  minHeight: "28px",
-                  height: "28px",
+                  padding: "8px 12px",
+                  fontSize: "14px",
+                  height: "42px",
+                  borderRadius: "12px",
                 },
                 container: {
-                  gap: "4px",
-                  minHeight: "0",
+                  gap: "16px",
                   margin: "0",
-                  padding: "10px",
                 },
                 divider: {
-                  margin: "4px 0",
+                  margin: "20px 0",
                 },
                 input: {
-                  padding: "4px 6px",
-                  fontSize: "13px",
-                  minHeight: "28px",
-                  height: "28px",
+                  padding: "8px 12px",
+                  fontSize: "14px",
+                  height: "42px",
+                  borderRadius: "12px",
                 },
                 label: {
-                  fontSize: "13px",
-                  marginBottom: "1px",
+                  fontSize: "14px",
+                  marginBottom: "4px",
                 },
                 anchor: {
-                  fontSize: "11px",
+                  fontSize: "14px",
                   padding: "0",
                   height: "auto",
-                  minHeight: "0",
                 },
                 message: {
-                  fontSize: "11px",
-                  margin: "2px 0",
+                  fontSize: "14px",
+                  margin: "4px 0",
                   padding: "0",
-                  height: "auto",
-                  minHeight: "0",
                 },
               },
             }}

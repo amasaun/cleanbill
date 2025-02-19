@@ -23,12 +23,18 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log("Root layout rendering");
+
   return (
     <html lang="en">
       <head>
         <link rel="icon" href="/images/3.png" />
       </head>
       <body className={`${poppins.variable} font-sans bg-gray-50`}>
+        <div className="fixed top-0 left-0 bg-blue-500 text-white p-2 z-50">
+          Layout Mounted
+        </div>
+
         <AuthProvider>
           <div className="min-h-screen flex flex-col">
             <Navbar />

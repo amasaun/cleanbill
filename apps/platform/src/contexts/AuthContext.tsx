@@ -19,24 +19,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check active sessions and sets the user
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
+    console.log("AuthProvider mounted"); // Debug log
 
-      // Get finishedWelcomeFlow from localStorage when session exists
-      if (session) {
-        const finishedWelcomeFlow = localStorage.getItem("finishedWelcomeFlow");
-        if (finishedWelcomeFlow) {
-          document.cookie = "finishedWelcomeFlow=true; path=/";
+    // Check active sessions and sets the user
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        console.log("Initial session check:", session); // Debug log
+        setUser(session?.user ?? null);
+        setLoading(false);
+
+        // Get finishedWelcomeFlow from localStorage when session exists
+        if (session) {
+          const finishedWelcomeFlow = localStorage.getItem(
+            "finishedWelcomeFlow"
+          );
+          if (finishedWelcomeFlow) {
+            document.cookie = "finishedWelcomeFlow=true; path=/";
+          }
         }
-      }
-    });
+      })
+      .catch((error) => {
+        console.error("Session check error:", error); // Debug error
+        setLoading(false);
+      });
 
     // Listen for changes on auth state
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log("Auth state changed:", _event, session); // Debug log
       setUser(session?.user ?? null);
 
       // Set cookie when auth state changes
@@ -55,13 +67,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  console.log("AuthProvider rendering", { user, loading }); // Debug log
+
   return (
     <AuthContext.Provider value={{ user, loading }}>
+      <div className="fixed top-20 left-0 bg-purple-500 text-white p-2 z-50">
+        Auth Provider Mounted (Loading: {loading.toString()})
+      </div>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export const useAuth = () => {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 };
